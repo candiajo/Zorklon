@@ -1,5 +1,3 @@
-#pragma once
-
 #include "stdafx.h"
 #include "world.h"
 #include "room.h"
@@ -13,11 +11,17 @@
 World::World()
 {
 	// Rooms
-	Room* mainHall = new Room("Main Hall", "A room with four doors.");
+	Room* mainHall = new Room("Main Hall", "You are in room with four doors.");
 		
-	Room* cryptGarden = new Room("Crypt Garden", "The garden before the crypt entrance.");
-	Item* venom = new Item("Venom", "A little bottle with venom.");
-	cryptGarden->AddItem(venom);
+	Room* cryptGarden = new Room("Crypt Garden", "You are in the garden before the crypt entrance.");
+	Item* venom = new Item("venom", "A little bottle with venom.");
+	Item* venom2 = new Item("venom2", "2A little bottle with venom.");
+	Item* venom3 = new Item("venom3", "3A little bottle with venom.");
+	Item* bag = new Item("bag", "A bag.");
+	mainHall->AddItem(venom);
+	mainHall->AddItem(venom2);
+	mainHall->AddItem(venom3);
+	mainHall->AddItem(bag);
 
 	Door* doorMainHall_CryptGarden = new Door(EAST, WEST, mainHall, cryptGarden);
 

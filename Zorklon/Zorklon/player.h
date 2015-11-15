@@ -5,6 +5,8 @@
 
 #include <string>
 
+class Item;
+
 class Player : public Entity
 {
 public:
@@ -14,10 +16,17 @@ public:
 	void Do(const string word1, const string word2);
 
 	Room* currentRoom;
+	int itemsEquiped;
 
 private:
-	DirectionType directionWatching = NOWHERE;
+	returnsType getItem(const string item, Entity* owner);
 	void Look(const string item);
 	void Go(const string direction);
 	void Open(const string item);
+	void Take(const string item);
+	void Leave(const string item);
+	void Equip(const string item);
+
+	DirectionType directionWatching;
+	const int maxItemsEquiped = 2;
 };

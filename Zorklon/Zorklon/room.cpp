@@ -9,10 +9,6 @@ Entity(name, description)
 	door.fill(NULL);
 };
 
-void Room::AddItem(Item* item)
-{
-	items.push_back(item);
-};
 
 Room* Room::getRoom(DirectionType direction)
 {

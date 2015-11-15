@@ -14,7 +14,7 @@ class Door;
 class Room: public Entity
 {
 private:
-	list<Item*> items;
+	
 	// lista de criaturas
 
 public:
@@ -24,6 +24,4 @@ public:
 	Room(const string name, const string description);
 	~Room();
 	Room* getRoom(DirectionType direction);
-
-	void AddItem(Item* item);
 };

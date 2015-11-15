@@ -9,11 +9,14 @@ using namespace std;
 class Entity
 {
 public:
-	string name;
-	string description;
-
-public:
 	Entity();
 	Entity(const string name, const string description);
 	virtual ~Entity();
+	Entity* extractItem(const string name);
+	Entity* findByName(const string name);
+	void AddItem(Entity* item);
+
+	string name;
+	string description;
+	list<Entity*> items;
 };	

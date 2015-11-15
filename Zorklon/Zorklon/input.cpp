@@ -1,5 +1,3 @@
-#pragma once
-
 #include "stdafx.h"
 #include "input.h"
 #include "world.h"
@@ -15,6 +13,7 @@ bool Input::getPlayerInput()
 {
 	int pos;
 
+	cout << "> ";
 	getline(cin, rawInput);
 	
 	//lowcase player input

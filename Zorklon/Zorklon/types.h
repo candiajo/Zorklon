@@ -16,6 +16,13 @@ enum colorType
 	GREEN = 2
 };
 
+enum returnsType
+{
+	GOT_ITEM,
+	NOT_FOUND,
+	TOO_MANY
+};
+
 #define LOCKED 1
 #define UNLOCKED 0
 
