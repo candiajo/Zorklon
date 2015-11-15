@@ -18,13 +18,13 @@ public:
 	void receiveAttack(int enemyAttackPoints);
 
 	Room* currentRoom;
-	int itemsEquiped;
 
 private:
 	returnsType getItem(const string item, Entity* owner);
 	returnsType putItem(const string item, Entity* newOwner);
 	void clearEnemy(Room* enemyRoom);
 	void exitRoom();
+	int itemsEquiped();
 
 	void Look(const string item);
 	void Go(const string direction);
@@ -35,6 +35,7 @@ private:
 	void Store(const string item);
 	void Attack(const string item);
 	void Upgrade(const string item);
+	void Poison(const string item);
 
 	DirectionType directionWatching;
 	const int maxItemsEquiped = 4;

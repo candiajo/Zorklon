@@ -10,7 +10,6 @@ class Item;
 Player::Player(const string name, const string description) :
 Entity(name, description)
 {
-	itemsEquiped = 0;
 	directionWatching = NOWHERE;
 	attackPoints = 10;
 	defensePoints = 10;
@@ -28,6 +27,7 @@ void Player::Do(const string word1, const string word2)
 	else if (word1 == "store") Store(word2);
 	else if (word1 == "attack") Attack(word2);
 	else if (word1 == "upgrade") Upgrade(word2);
+	else if (word1 == "poison") Poison(word2);
 	else cout << "I don't understand this.\n";
 }
 
@@ -35,6 +35,14 @@ bool Player::isDead()
 {
 	return (lifePoints <= 0);
 }
+
+int Player::itemsEquiped()
+{
+	int itemsEquiped = items.size();
+	if (dynamic_cast<Item*>(findByName("bag")) != NULL) --itemsEquiped; // bag doesn't count as an item equiped
+	return itemsEquiped;
+}
+
 returnsType Player::getItem(const string item, Entity* owner)
 {
 	Item* foundItem;
@@ -44,8 +52,7 @@ returnsType Player::getItem(const string item, Entity* owner)
 
 	if (foundItem != NULL)
 	{
-		// the BAG doesn't count as an equiped item
-		if (itemsEquiped == maxItemsEquiped && item != "bag")
+		if (itemsEquiped() == maxItemsEquiped)
 		{
 			owner->addItem(foundItem);
 			return TOO_MANY;
@@ -53,7 +60,6 @@ returnsType Player::getItem(const string item, Entity* owner)
 		else
 		{
 			addItem(foundItem);
-			if (item != "bag") ++itemsEquiped;
 			return ITEM_GOT;
 		}
 	}
@@ -74,7 +80,6 @@ returnsType Player::putItem(const string item, Entity* newOwner)
 	else
 	{
 		newOwner->addItem(foundItem);
-		if (item != "bag") --itemsEquiped;			// the BAG doesn't count as an equiped item
 		return ITEM_PUT;
 	}
 }
@@ -327,11 +332,57 @@ void Player::Attack(const string item)
 
 void Player::Upgrade(const string item)
 {
-	if (item == "") cout << "You must tell what to upgrade.\n";
-	else if (item == "sword" || item == "shield")
-	{
+	Item* upgradeTool = dynamic_cast<Item*>(findByName("tool"));
+	Item* itemToUpgrade;
 
+	if (item == "") 
+		cout << "You must tell what to upgrade.\n";
+	else if (upgradeTool == NULL)
+		cout << "You must have an upgrade tool equiped.\n";
+	else if (item != "sword" && item != "shield")
+		cout << "You cannot upgrade that.\n";
+	else 
+	{
+		itemToUpgrade = dynamic_cast<Item*>(findByName(item));
+		if (itemToUpgrade == NULL) 
+			cout << "You must have the " << item << " equiped in order to upgrade it.\n";
+		else
+		{
+			upgradeTool = dynamic_cast<Item*>(extractItem("tool"));
+			cout << "Your " << item << " upgrades from " << itemToUpgrade->usePoints;
+			itemToUpgrade->usePoints += upgradeTool->usePoints;
+			cout << " to " << itemToUpgrade->usePoints << " points.\n";
+			delete(upgradeTool);
+		}
 	}
+}
+
+void Player::Poison(const string item)
+{
+	Item* poisonBottle = dynamic_cast<Item*>(findByName("poison"));
+	Item* itemToPoison;
+
+	if (item == "")
+		cout << "You must tell what to poison.\n";
+	else if (poisonBottle == NULL)
+		cout << "You must have a bottle of poison equiped.\n";
+	else if (item != "sword" && item != "meat")
+		cout << "You cannot poison that.\n";
+	else
+	{
+		itemToPoison = dynamic_cast<Item*>(findByName(item));
+		if (itemToPoison == NULL)
+			cout << "You must have the " << item << " equiped in order to poison it.\n";
+		else
+		{
+			poisonBottle = dynamic_cast<Item*>(extractItem("poison"));
+			cout << "Your " << item << " upgrades from " << itemToPoison->usePoints;
+			itemToPoison->usePoints += poisonBottle->usePoints;
+			cout << " to " << itemToPoison->usePoints << " points of damage.\n";
+			delete(poisonBottle);
+		}
+	}
+	cout << itemsEquiped();
 }
 
 Player::~Player()
