@@ -18,9 +18,10 @@ enum colorType
 
 enum returnsType
 {
-	GOT_ITEM,
+	ITEM_GOT,
 	NOT_FOUND,
-	TOO_MANY
+	TOO_MANY,
+	ITEM_PUT
 };
 
 #define LOCKED 1

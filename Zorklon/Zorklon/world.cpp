@@ -18,13 +18,20 @@ World::World()
 	Item* venom2 = new Item("venom2", "2A little bottle with venom.");
 	Item* venom3 = new Item("venom3", "3A little bottle with venom.");
 	Item* bag = new Item("bag", "A bag.");
+	Item* redKey = new Item("redkey", "A red key.");
+	Item* greenKey = new Item("greenkey", "A green key.");
+	Item* blueKey = new Item("bluekey", "A blue key.");
+
+	mainHall->AddItem(redKey);
+	mainHall->AddItem(greenKey);
+	mainHall->AddItem(blueKey);
 	mainHall->AddItem(venom);
 	mainHall->AddItem(venom2);
 	mainHall->AddItem(venom3);
 	mainHall->AddItem(bag);
 
 	Door* doorMainHall_CryptGarden = new Door(EAST, WEST, mainHall, cryptGarden);
-
+	doorMainHall_CryptGarden->setDoorLock(LOCKED, LOCKED, LOCKED);
 	rooms.push_back(mainHall);
 	rooms.push_back(cryptGarden);
 
