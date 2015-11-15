@@ -2,7 +2,7 @@
 //
 
 #include "stdafx.h"
-#include <iostream>
+
 
 #include "world.h";
 #include "input.h";
@@ -20,6 +20,7 @@ int main()
 	while (!endGame)
 	{
 		endGame = input.getPlayerInput();
+		endGame = endGame || zorklonWorld.player->isDead();
 	}
 
 	cout << "\nThanks for playing!\n";

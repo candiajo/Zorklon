@@ -8,20 +8,17 @@
 
 using namespace std;
 
-
+class Enemy;
 class Door;
 
 class Room: public Entity
 {
-private:
-	
-	// lista de criaturas
-
 public:
 	array<Door*, 4> door;
+	Enemy* enemy;
 
-public:
 	Room(const string name, const string description);
 	~Room();
 	Room* getRoom(DirectionType direction);
+	void setEnemy(Enemy* enemy);
 };

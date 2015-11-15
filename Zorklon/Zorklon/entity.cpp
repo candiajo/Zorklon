@@ -10,10 +10,11 @@ Entity::Entity(const string name, const string description) :
 	name(name), description(description)
 {}
 
-void Entity::AddItem(Entity* item)
+void Entity::addItem(Entity* item)
 {
 	items.push_back(item);
 };
+
 
 
 // returns the item and removes it from the list

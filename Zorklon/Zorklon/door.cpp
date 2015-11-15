@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "door.h"
 #include "room.h"
-#include <iostream>
 
 Door::Door(const DirectionType inDirectionA, const DirectionType inDirectionB, Room* sideA, Room* sideB)
 {

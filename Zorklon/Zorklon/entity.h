@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <list>
 #include "types.h"
 
@@ -14,7 +13,8 @@ public:
 	virtual ~Entity();
 	Entity* extractItem(const string name);
 	Entity* findByName(const string name);
-	void AddItem(Entity* item);
+	void addItem(Entity* item);
+	
 
 	string name;
 	string description;

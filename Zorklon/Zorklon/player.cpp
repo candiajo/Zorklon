@@ -2,7 +2,8 @@
 #include "player.h"
 #include "entity.h"
 #include "door.h"
-#include <iostream>
+#include "enemy.h"
+
 
 class Item;
 
@@ -11,6 +12,9 @@ Entity(name, description)
 {
 	itemsEquiped = 0;
 	directionWatching = NOWHERE;
+	attackPoints = 10;
+	defensePoints = 10;
+	lifePoints = 50;
 };
 
 void Player::Do(const string word1, const string word2)
@@ -22,9 +26,15 @@ void Player::Do(const string word1, const string word2)
 	else if (word1 == "leave") Leave(word2);
 	else if (word1 == "equip") Equip(word2);
 	else if (word1 == "store") Store(word2);
+	else if (word1 == "attack") Attack(word2);
+	else if (word1 == "upgrade") Upgrade(word2);
 	else cout << "I don't understand this.\n";
 }
 
+bool Player::isDead()
+{
+	return (lifePoints <= 0);
+}
 returnsType Player::getItem(const string item, Entity* owner)
 {
 	Item* foundItem;
@@ -37,12 +47,12 @@ returnsType Player::getItem(const string item, Entity* owner)
 		// the BAG doesn't count as an equiped item
 		if (itemsEquiped == maxItemsEquiped && item != "bag")
 		{
-			owner->AddItem(foundItem);
+			owner->addItem(foundItem);
 			return TOO_MANY;
 		}
 		else
 		{
-			AddItem(foundItem);
+			addItem(foundItem);
 			if (item != "bag") ++itemsEquiped;
 			return ITEM_GOT;
 		}
@@ -63,9 +73,56 @@ returnsType Player::putItem(const string item, Entity* newOwner)
 		//cout << "You don't have that item.\n";
 	else
 	{
-		newOwner->AddItem(foundItem);
+		newOwner->addItem(foundItem);
 		if (item != "bag") --itemsEquiped;			// the BAG doesn't count as an equiped item
 		return ITEM_PUT;
+	}
+}
+
+void Player::clearEnemy(Room* enemyRoom)
+{
+	cout << "The enemy has been killed.\n";
+	delete(enemyRoom->enemy);
+	enemyRoom->enemy = NULL;
+}
+
+void Player::exitRoom()
+{
+	if (currentRoom->enemy != NULL)
+	{
+		currentRoom->enemy->attackPlayer(this);
+	}
+	if (!isDead())
+	{
+		currentRoom = currentRoom->door[directionWatching]->getNextRoom(currentRoom);
+		cout << currentRoom->description << "\n";
+		directionWatching = NOWHERE;
+	}
+}
+
+void Player::receiveAttack(int enemyAttackPoints)
+{
+	int enemyLifeBefore = lifePoints;
+	int totalDefensePoints = defensePoints;
+	Item* shield = dynamic_cast<Item*>(findByName("shield"));
+
+	if (shield != NULL)	totalDefensePoints += shield->usePoints;		// if the player has a shield, increases his defense power
+	
+	enemyAttackPoints -= totalDefensePoints;
+	if (enemyAttackPoints < 0) enemyAttackPoints = 0;
+
+	lifePoints = lifePoints - enemyAttackPoints;
+
+	cout << "The enemy in the room attack you before you exit.\n";
+	cout << "The attack caused " << enemyLifeBefore - lifePoints << " points of damage.\n";
+
+	if (lifePoints <= 0)
+	{
+		cout << "The hero has fallen...\n";
+	}
+	else
+	{
+		cout << "You have " << lifePoints << " points of life now.\n";
 	}
 }
 
@@ -93,9 +150,7 @@ void Player::Go(const string direction)
 		}
 		else if (currentRoom->door[directionWatching]->isOpen)					// the door is open
 		{
-			currentRoom = currentRoom->door[directionWatching]->getNextRoom(currentRoom);
-			cout << currentRoom->description << "\n";
-			directionWatching = NOWHERE;
+			exitRoom();
 		}
 		else																	// the door is closed
 		{
@@ -150,9 +205,7 @@ void Player::Open(const string item)
 		{
 			cout << "You opened the door and go ahead.\n";
 			currentRoom->door[directionWatching]->isOpen = true;
-			currentRoom = currentRoom->door[directionWatching]->getNextRoom(currentRoom);
-			cout << currentRoom->description << "\n";
-			directionWatching = NOWHERE;
+			exitRoom();
 		}
 	}
 	else
@@ -234,6 +287,50 @@ void Player::Store(const string item)
 			cout << "You stored the " << item << " in the bag.\n";
 		else														// the player don't have that item
 			cout << "You don't have that item.\n";
+	}
+}
+
+void Player::Attack(const string item)
+{
+	int totalAttackPoints = attackPoints;
+	Item* sword;
+	int enemyLifeAfter;
+	int enemyLifeBefore;
+
+	if (item == "") cout << "You must tell what to attack.\n";
+	else if ((item == "goblin" || item == "monster" || item == "enemy") && currentRoom->enemy != NULL)
+	{
+		sword = dynamic_cast<Item*>(findByName("sword"));
+		if (sword != NULL)  
+		{
+			cout << "You attack the enemy with your sword.\n";
+			totalAttackPoints += sword->usePoints;		// if the player has a sword, increases his attack power
+		}
+		else
+		{
+			cout << "You attack the enemy with your hands.\n";
+		}
+		
+		enemyLifeBefore = currentRoom->enemy->lifePoints;
+		enemyLifeAfter = currentRoom->enemy->receiveAttack(totalAttackPoints);
+		if (enemyLifeAfter <= 0) 
+			clearEnemy(currentRoom);
+		else
+		{
+			cout << "Your attack caused " << enemyLifeBefore - enemyLifeAfter << " points of damage.\n";
+			cout << "The enemy has " << enemyLifeAfter << " points of life now.\n";
+		}
+	}
+	else
+		cout << "There is no " << item << " in this room.\n";
+}
+
+void Player::Upgrade(const string item)
+{
+	if (item == "") cout << "You must tell what to upgrade.\n";
+	else if (item == "sword" || item == "shield")
+	{
+
 	}
 }
 

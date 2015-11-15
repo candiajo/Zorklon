@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "input.h"
 #include "world.h"
-#include <iostream>
 #include <locale>
 
 Input::Input(Player* player)
