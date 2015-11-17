@@ -44,7 +44,7 @@ World::World()
 	Item* tool3 = new Item("tool", "A TOOL. You can UPGRADE the sword or the shield (one use).", 5);
 	Item* sword = new Item("sword", "A big, fancy SWORD. You can use it to ATTACK with more power.", 10);
 	Item* shield = new Item("shield", "A wood SHIELD, doesn't seem very solid.", 5);
-	Item* bag = new Item("bag", "A BAG, you can STORE items inside, and you can EQUIP them.");
+	Item* bag = new Item("bag", "A BAG, you can STORE infinite items inside, and you can EQUIP them.");
 	Item* redKey = new Item("redkey", "A rusty old red key (I'll call it REDKEY), you can OPEN doors with red locks.");
 	Item* blueKey = new Item("bluekey", "A little strange blue key (I'll call it BLUEKEY), you can OPEN doors with blue locks.");	
 	Item* meat = new Item("meat", "A piece of rotten MEAT. Maybe some monster will eat this if I LEAVE it in the ground.");

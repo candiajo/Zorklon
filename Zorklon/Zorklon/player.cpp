@@ -296,11 +296,16 @@ void Player::Take(const string item)
 	else
 	{
 		if (response == ITEM_GOT)
+		{
 			cout << "You've taken the " << item << ".\n";
+			if (item == "bag") cout << "Now you can STORE lots of items in the bag. Remember that you can only use equiped items, so STORE what you don't need and EQUIP what you need.\n";
+		}
 		else if (response == NOT_FOUND)
 			cout << "There is not such item near.\n";
 		else if (response == TOO_MANY)
+		{
 			cout << "You have too many items equiped, leave one or store one if you have a BAG.\n";
+		}
 	}
 }
 
