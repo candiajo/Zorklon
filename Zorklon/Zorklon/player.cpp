@@ -7,13 +7,13 @@
 
 class Item;
 
-Player::Player(const string name, const string description) :
+Player::Player(const char* name, const char* description, const int attackPoints, const int defensePoints, const int lifePoints) :
 Entity(name, description)
 {
 	directionWatching = NOWHERE;
-	attackPoints = 10;
-	defensePoints = 10;
-	lifePoints = 50;
+	this->attackPoints =attackPoints;
+	this->defensePoints = defensePoints;
+	this->lifePoints = lifePoints;
 	winGame = false;
 };
 
@@ -35,12 +35,12 @@ void Player::Do(const string word1, const string word2)
 	if (word1 != "go") tickEnemy();
 }
 
-bool Player::isDead()
+bool Player::isDead() const
 {
 	return (lifePoints <= 0);
 }
 
-int Player::itemsEquiped()
+int Player::itemsEquiped() const
 {
 	int itemsEquiped = items.size();
 	if (dynamic_cast<Item*>(findByName("bag")) != NULL) --itemsEquiped; // bag doesn't count as an item equiped
@@ -141,7 +141,7 @@ void Player::receiveAttack(int enemyAttackPoints)
 	}
 }
 
-void Player::Look(const string item)
+void Player::Look(const string item) const
 {
 	if (item == "" || item == "room")
 	{
@@ -454,7 +454,7 @@ void Player::Poison(const string item)
 	}
 }
 
-void Player::showHelp()
+void Player::showHelp() const
 {
 	cout << "LIST OF COMMANDS:" << endl;
 	cout << "look [X] - Show a description of X." << endl;
@@ -470,4 +470,7 @@ void Player::showHelp()
 }
 
 Player::~Player()
-{};
+{
+	for (auto& item : items) delete(item);
+	items.clear();
+};

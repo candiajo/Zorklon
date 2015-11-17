@@ -17,7 +17,7 @@ public:
 	array<Door*, 4> door;
 	Enemy* enemy;
 
-	Room(const string name, const string description);
+	Room(const char* name, const char* description);
 	~Room();
 	Room* getRoom(DirectionType direction);
 	void setEnemy(Enemy* enemy);

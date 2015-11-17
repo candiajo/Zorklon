@@ -1,10 +1,13 @@
-﻿Compilación iniciada a las 15/11/2015 1:19:26.
+﻿Compilación iniciada a las 17/11/2015 14:18:28.
      1>Proyecto "C:\Users\Jordi\Documents\GitHub\Zorklon\Zorklon\Zorklon\Zorklon.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Release\Zorklon.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
          stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\Zorklon.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt door.cpp entity.cpp input.cpp item.cpp player.cpp room.cpp main.cpp world.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Release\Zorklon.pch" /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt door.cpp enemy.cpp entity.cpp input.cpp item.cpp player.cpp room.cpp main.cpp world.cpp
          door.cpp
+     1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
+     1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
+         enemy.cpp
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
          entity.cpp
@@ -19,6 +22,8 @@
          room.cpp
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
+     1>room.cpp(25): warning C4150: eliminación de puntero a tipo 'Enemy' incompleto; no se ha llamado a un destructor
+                 c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(11) : vea la declaración de 'Enemy'
          main.cpp
      1>main.cpp(7): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
@@ -29,6 +34,7 @@
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jordi\Documents\GitHub\Zorklon\Zorklon\Release\Zorklon.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jordi\Documents\GitHub\Zorklon\Zorklon\Release\Zorklon.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jordi\Documents\GitHub\Zorklon\Zorklon\Release\Zorklon.lib" /MACHINE:X86 /SAFESEH Release\door.obj
+         Release\enemy.obj
          Release\entity.obj
          Release\input.obj
          Release\item.obj
@@ -44,4 +50,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:06.24
+Tiempo transcurrido 00:00:03.97

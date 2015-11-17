@@ -1,11 +1,11 @@
-﻿Compilación iniciada a las 16/11/2015 17:01:05.
+﻿Compilación iniciada a las 17/11/2015 14:10:41.
      1>Proyecto "C:\Users\Jordi\Documents\GitHub\Zorklon\Zorklon\Zorklon\Zorklon.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Zorklon.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt player.cpp world.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Zorklon.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt enemy.cpp world.cpp
          world.cpp
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
-         player.cpp
+         enemy.cpp
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\item.h(3): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
      1>c:\users\jordi\documents\github\zorklon\zorklon\zorklon\room.h(6): warning C4067: símbolos (token) inesperados después de la directiva del preprocesador; se esperaba una nueva línea
          Generando código...
@@ -25,4 +25,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:01.01
+Tiempo transcurrido 00:00:01.25

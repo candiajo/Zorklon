@@ -16,9 +16,12 @@ int main()
 {
 	string player_input;
 	bool endGame = false;
+	
+	cout << "Type HELP for a list of commands.\n\n";
 
 	cout << "Welcome to Zorklon, you are in a old mansion and your goal is to escape. Good luck!" << endl << endl;
 	zorklonWorld.player->Do("look", "room");
+
 	while (!endGame)
 	{
 		endGame = input.getPlayerInput();

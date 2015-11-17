@@ -13,9 +13,9 @@ class Door : public Entity
 public:
 	Door(const DirectionType inDirectionA, const DirectionType inDirectionB, Room* sideA, Room* sideB);
 	~Door();
-	Room* getNextRoom(Room* previousRoom);
-	bool doorIsLocked();
-	void checkDoor();	// tells the color of the keys needed for opening the door
+	Room* getNextRoom(const Room* previousRoom) const;
+	bool doorIsLocked() const;
+	void checkDoor() const;	// tells the color of the keys needed for opening the door
 	void setDoorLock(const int redLock, const int blueLock, const int greenLock);
 
 	Room* sideA;

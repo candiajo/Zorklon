@@ -13,7 +13,7 @@ Door::Door(const DirectionType inDirectionA, const DirectionType inDirectionB, R
 	doorlock.fill(UNLOCKED);
 }
 
-Room* Door::getNextRoom(Room* previousRoom)
+Room* Door::getNextRoom(const Room* previousRoom) const
 {
 	if (sideA == previousRoom)
 		return sideB;
@@ -21,7 +21,7 @@ Room* Door::getNextRoom(Room* previousRoom)
 		return sideA;
 }
 
-bool Door::doorIsLocked()
+bool Door::doorIsLocked() const
 {
 	int locks = 0;
 
@@ -33,7 +33,7 @@ bool Door::doorIsLocked()
 	return (locks > 0);
 }
 
-void Door::checkDoor()
+void Door::checkDoor() const
 {
 	if (doorlock[RED] + doorlock[BLUE] + doorlock[GREEN] == 0) cout << "The door hasn't any locks.\n";
 	else

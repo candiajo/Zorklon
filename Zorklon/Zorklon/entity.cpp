@@ -6,16 +6,9 @@
 Entity::Entity()
 {}
 
-Entity::Entity(const string name, const string description) :
+Entity::Entity(const char* name, const char* description) :
 	name(name), description(description)
 {}
-
-void Entity::addItem(Entity* item)
-{
-	items.push_back(item);
-};
-
-
 
 // returns the item and removes it from the list
 Entity* Entity::extractItem(const string name)
@@ -34,7 +27,7 @@ Entity* Entity::extractItem(const string name)
 }
 
 // returns the item from the list
-Entity* Entity::findByName(const string name)
+Entity* Entity::findByName(const string name) const
 {
 	for (list<Entity*>::const_iterator it = items.cbegin(); it != items.cend(); ++it)
 	{
@@ -44,6 +37,11 @@ Entity* Entity::findByName(const string name)
 
 	return NULL;
 }
+
+void Entity::addItem(Entity* item)
+{
+	items.push_back(item);
+};
 
 Entity::~Entity()
 {}

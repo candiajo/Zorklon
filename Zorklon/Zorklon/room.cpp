@@ -2,7 +2,7 @@
 #include "room.h"
 #include "door.h"
 
-Room::Room(const string name, const string description) :
+Room::Room(const char* name, const char* description) :
 Entity(name, description)
 {
 	door.fill(NULL);
@@ -20,4 +20,8 @@ void Room::setEnemy(Enemy* enemy)
 }
 
 Room::~Room()
-{};
+{
+	for (auto& item : items) delete(item);
+	if (enemy != NULL) delete(enemy);
+	items.clear();
+};

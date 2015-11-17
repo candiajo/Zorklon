@@ -4,13 +4,17 @@
 #include "item.h"
 #include "player.h"
 #include "door.h"
+#include "types.h"
 #include "enemy.h"
 
 #include <list>
 
+using namespace std;
+
 World::World()
 {
 	// Rooms
+
 	Room* mainHall = new Room("Main Hall", "You are in the hall of the mansion, a room with four doors.");
 	Room* graveyardGarden = new Room("Graveyard Garden", "A garden with beautiful flowers but a bit sad to stay.");
 	Room* graveyardEntrance = new Room("Graveyard Entrance", "A place surrounded by fences, to the west you can see the Graveyard.");
@@ -22,6 +26,17 @@ World::World()
 	Room* crypt = new Room("Crypt", "A humid place, with water on the floor. It seems that a big creature lived here.");
 	Room* frontYard = new Room("Front Yard", "You are in a big area outside the house, surrounded by a small fence.");
 	
+	entities.push_back(mainHall);
+	entities.push_back(graveyardGarden);
+	entities.push_back(graveyardEntrance);
+	entities.push_back(graveyard);
+	entities.push_back(chapelEntrance);
+	entities.push_back(chapel);
+	entities.push_back(cryptGarden);
+	entities.push_back(cryptEntrance);
+	entities.push_back(crypt);
+	entities.push_back(frontYard);
+
 	// Items
 	Item* poison = new Item("poison", "A little bottle with POISON. You can POISON things with it.", 15);
 	Item* tool1 = new Item("tool", "A TOOL. You can UPGRADE the sword or the shield (one use).", 5);
@@ -34,12 +49,6 @@ World::World()
 	Item* blueKey = new Item("bluekey", "A little strange blue key (I'll call it BLUEKEY), you can OPEN doors with blue locks.");	
 	Item* meat = new Item("meat", "A piece of rotten MEAT. Maybe some monster will eat this if I LEAVE it in the ground.");
 
-	
-	//mainHall->addItem(meat);
-	//mainHall->addItem(poison);
-	//mainHall->addItem(bag);
-	//mainHall->addItem(tool1);
-	
 	cryptGarden->addItem(poison);
 	crypt->addItem(redKey);
 	chapel->addItem(blueKey);
@@ -71,11 +80,24 @@ World::World()
 	Door* door_MainHall_Frontyard = new Door(NORTH, SOUTH, mainHall, frontYard);
 	door_MainHall_Frontyard->setDoorLock(LOCKED, LOCKED, LOCKED);
 
+	entities.push_back(door_MainHall_CryptGarden);
+	entities.push_back(door_CryptGarden_CryptEntrance);
+	entities.push_back(door_CryptEntrance_ChapelEntrance);
+	entities.push_back(door_CryptEntrance_Crypt);
+	entities.push_back(door_Crypt_Chapel);
+	entities.push_back(door_MainHall_ChapelEntrance);
+	entities.push_back(door_ChapelEntrance_GraveyardEntrance);
+	entities.push_back(door_ChapelEntrance_Chapel);
+	entities.push_back(door_MainHall_GraveyardGarden);
+	entities.push_back(door_GraveyardGarden_GraveyardEntrance);
+	entities.push_back(door_GraveyardEntrance_Graveyard);
+	entities.push_back(door_MainHall_Frontyard);
+
 	// Enemies
-	Enemy* goblin1 = new Enemy("goblin1", "An ugly creature, a GOBLIN, is in the middle of the room. Be careful.", 11, 2, 40);
-	Enemy* goblin2 = new Enemy("goblin2", "A strange creature, it's a GOBLIN. Looks unfriendly.", 11, 2, 40);
-	Enemy* goblin3 = new Enemy("goblin3", "A big GOBLIN in a hole in the wall, it's hidden and protected from your attacks.", 11, 999, 40);
-	Enemy* boss = new Enemy("boss", "A huge MONSTER in front of you, it's hungry...", 15, 10, 100);
+	Enemy* goblin1 = new Enemy("goblin1", "An ugly creature, a GOBLIN, is in the middle of the room. Be careful.", 15, 2, 40);
+	Enemy* goblin2 = new Enemy("goblin2", "A strange creature, it's a GOBLIN. Looks unfriendly.", 18, 2, 40);
+	Enemy* goblin3 = new Enemy("goblin3", "A big GOBLIN in a hole in the wall, it's hidden and protected from your attacks.", 11, 999, 70);
+	Enemy* boss = new Enemy("boss", "A huge MONSTER in front of you, it's hungry...", 30, 10, 60);
 
 	chapelEntrance->setEnemy(goblin1);
 	graveyardGarden->setEnemy(goblin2);
@@ -83,12 +105,15 @@ World::World()
 	frontYard->setEnemy(boss);
 	
 	// Player
-	player = new Player("Hero", "You are a very handsome guy.");
+	player = new Player("Hero", "You are a very handsome guy.", 10, 10, 90);
 	player->currentRoom = mainHall;
+
+	entities.push_back(player);
 };
 
 World::~World()
 {
-
+	for (auto& entity : entities) delete(entity);
+	entities.clear();
 }
 

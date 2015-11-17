@@ -11,5 +11,6 @@ public:
 	World();
 	~World();
 
+	list<Entity*> entities;
 	Player* player;
 };

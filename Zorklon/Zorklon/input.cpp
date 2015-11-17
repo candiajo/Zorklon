@@ -21,17 +21,16 @@ bool Input::getPlayerInput()
 
 	pos = rawInput.find(" ");
 
-	if (pos == string::npos)
+	if (pos == string::npos)	// there is only one word
 	{
 		word1 = rawInput;
 		word2 = "";
 	}
-	else
+	else						// there are two words
 	{
 		word1 = rawInput.substr(0, pos);
 		word2 = rawInput.substr(pos + 1, string::npos);
 	}
-
 	if (word1 == "quit")
 	{
 		return true;
@@ -41,11 +40,6 @@ bool Input::getPlayerInput()
 		player->Do(word1, word2);
 		return false;
 	}
-	
-	/*	TODELETE
-	cout << word1 << "\n";
-	cout << word2 << "\n";
-	*/
 }
 
 

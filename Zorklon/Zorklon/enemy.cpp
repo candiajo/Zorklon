@@ -2,7 +2,7 @@
 #include "enemy.h"
 #include "player.h"
 
-Enemy::Enemy(const string name, const string description, const int attack, const int defense, const int life) :
+Enemy::Enemy(const char* name, const char* description, const int attack, const int defense, const int life) :
 Entity(name, description)
 {
 	attackPoints = attack;
@@ -19,7 +19,7 @@ int Enemy::receiveAttack(int playerAttackPoints)
 	return lifePoints;
 }
 
-void Enemy::attackPlayer(Player* player)
+void Enemy::attackPlayer(Player* player) const
 {
 	player->receiveAttack(attackPoints);
 }
@@ -33,8 +33,8 @@ void Enemy::Tick(Player* player)
 		if (meat != NULL)
 		{
 			cout << "The big GOBLIN jumps out of his hole and eats the rotten MEAT. He stands in front of you and it's still hungry...\n";
+			attackPoints = 25;
 			defensePoints = 4;
-			attackPoints = 18;
 			lifePoints -= meat->usePoints;
 			if (meat->usePoints > 0) cout << "The POISON of the MEAT hurts the GOBLIN, it loses " << meat->usePoints << " points. Now it has " << lifePoints << " points of life.\n";
 			description = "A big GOBLIN that doesn't seem to be your friend.\n";
@@ -50,7 +50,7 @@ void Enemy::Tick(Player* player)
 	}
 }
 
-void Enemy::enemyDead(Room* room)
+void Enemy::enemyDead(Room* room) const
 {
 	cout << "The enemy has been killed.\n";
 	if (name == "boss")	cout << "You defeated the big guardian, you won the game! Congratulations!.\n";
