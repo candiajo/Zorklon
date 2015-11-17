@@ -12,7 +12,7 @@ bool Input::getPlayerInput()
 {
 	int pos;
 
-	cout << "> ";
+	cout << endl << "> ";
 	getline(cin, rawInput);
 	
 	//lowcase player input

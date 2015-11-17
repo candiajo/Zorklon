@@ -13,7 +13,6 @@ Door::Door(const DirectionType inDirectionA, const DirectionType inDirectionB, R
 	doorlock.fill(UNLOCKED);
 }
 
-
 Room* Door::getNextRoom(Room* previousRoom)
 {
 	if (sideA == previousRoom)
@@ -36,9 +35,13 @@ bool Door::doorIsLocked()
 
 void Door::checkDoor()
 {
-	if (doorlock[RED] == 1)  cout << "You need the RED key for this door.\n";
-	if (doorlock[BLUE] == 1)  cout << "You need the BLUE key for this door.\n";
-	if (doorlock[GREEN] == 1)  cout << "You need the GREEN key for this door.\n";
+	if (doorlock[RED] + doorlock[BLUE] + doorlock[GREEN] == 0) cout << "The door hasn't any locks.\n";
+	else
+	{
+		if (doorlock[RED] == 1)  cout << "You need the RED key for this door.\n";
+		if (doorlock[BLUE] == 1)  cout << "You need the BLUE key for this door.\n";
+		if (doorlock[GREEN] == 1)  cout << "You need the GREEN key for this door.\n";
+	}
 }
 
 void Door::setDoorLock(const int redLock, const int blueLock, const int greenLock)

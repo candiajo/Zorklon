@@ -7,9 +7,6 @@
 
 class World
 {
-private:
-	list<Room*> rooms;
-
 public:
 	World();
 	~World();

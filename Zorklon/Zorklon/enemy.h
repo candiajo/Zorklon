@@ -3,6 +3,7 @@
 #include "entity.h"
 
 class Player;
+class Room;
 
 class Enemy : public Entity
 {
@@ -11,10 +12,12 @@ public:
 	~Enemy();
 	int receiveAttack(int attackPoints);
 	void attackPlayer(Player* player);
+	void Tick(Player* player);
+	void enemyDead(Room* room);
+
 	int lifePoints;
 
 private:
 	int attackPoints;
 	int defensePoints;
-
 };

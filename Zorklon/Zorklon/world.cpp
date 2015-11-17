@@ -16,56 +16,75 @@ World::World()
 	Room* graveyardEntrance = new Room("Graveyard Entrance", "A place surrounded by fences, to the west you can see the Graveyard.");
 	Room* graveyard = new Room("Graveyard", "You are in the graveyard of the family.");
 	Room* chapelEntrance = new Room("Chapel Entrance", "A beautiful chamber with large pictures on the walls.");
-	Room* Chapel = new Room("Chapel", "This is a little room with saints and figures.");
+	Room* chapel = new Room("Chapel", "This is a little room with saints and figures.");
 	Room* cryptGarden = new Room("Crypt Garden", "The garden that leads to the crypt is dark an abandoned.");
 	Room* cryptEntrance = new Room("Crypt Entrance", "You are in a narrow room with low ceiling.");
 	Room* crypt = new Room("Crypt", "A humid place, with water on the floor. It seems that a big creature lived here.");
 	Room* frontYard = new Room("Front Yard", "You are in a big area outside the house, surrounded by a small fence.");
 	
-	/*
-	// Rooms
+	// Items
+	Item* poison = new Item("poison", "A little bottle with POISON. You can POISON things with it.", 15);
+	Item* tool1 = new Item("tool", "A TOOL. You can UPGRADE the sword or the shield (one use).", 5);
+	Item* tool2 = new Item("tool", "A TOOL. You can UPGRADE the sword or the shield (one use).", 5);
+	Item* tool3 = new Item("tool", "A TOOL. You can UPGRADE the sword or the shield (one use).", 5);
+	Item* sword = new Item("sword", "A big, fancy SWORD. You can use it to ATTACK with more power.", 10);
+	Item* shield = new Item("shield", "A wood SHIELD, doesn't seem very solid.", 5);
+	Item* bag = new Item("bag", "A BAG, you can STORE items inside, and you can EQUIP them.");
+	Item* redKey = new Item("redkey", "A rusty old red key (I'll call it REDKEY), you can OPEN doors with red locks.");
+	Item* blueKey = new Item("bluekey", "A little strange blue key (I'll call it BLUEKEY), you can OPEN doors with blue locks.");	
+	Item* meat = new Item("meat", "A piece of rotten MEAT. Maybe some monster will eat this if I LEAVE it in the ground.");
+
 	
-	Item* poison = new Item("poison", "A little bottle with poison.", 15);
-	Item* poison2 = new Item("poison", "A little bottle with poison.", 15);
-	Item* poison3 = new Item("poison", "A little bottle with poison.", 15);
-	Item* bag = new Item("bag", "A bag.");
-	Item* redKey = new Item("redkey", "A red key.");
-	Item* greenKey = new Item("greenkey", "A green key.");
-	Item* blueKey = new Item("bluekey", "A blue key.");
-	Item* sword = new Item("sword", "A big sword.", 10);
-	Item* shield = new Item("shield", "A wood shield.", 5);
-	Item* tool1 = new Item("tool", "A tool for upgrading the sword or the shield.", 5);
-	Item* tool2 = new Item("tool", "A tool for upgrading the sword or the shield.", 5);
-	Item* tool3 = new Item("tool", "A tool for upgrading the sword or the shield.", 5);
-	Item* meat = new Item("meat", "A piece of rotten meat.");
-	Enemy* greenGoblin = new Enemy("greenGoblin", "A little green goblin.", 11, 2, 40);
+	//mainHall->addItem(meat);
+	//mainHall->addItem(poison);
+	//mainHall->addItem(bag);
+	//mainHall->addItem(tool1);
+	
+	cryptGarden->addItem(poison);
+	crypt->addItem(redKey);
+	chapel->addItem(blueKey);
+	cryptEntrance->addItem(tool1);
+	chapelEntrance->addItem(tool2);
+	graveyardEntrance->addItem(tool3);
+	graveyard->addItem(meat);
+	crypt->addItem(sword);
+	chapel->addItem(shield);
+	crypt->addItem(bag);
 
-	mainHall->setEnemy(greenGoblin);
+	// Doors
+	Door* door_MainHall_CryptGarden = new Door(EAST, WEST, mainHall, cryptGarden);
+	Door* door_CryptGarden_CryptEntrance = new Door(SOUTH, NORTH, cryptGarden, cryptEntrance);
+	Door* door_CryptEntrance_ChapelEntrance = new Door(WEST, EAST, cryptEntrance, chapelEntrance);
+	door_CryptEntrance_ChapelEntrance->setDoorLock(UNLOCKED, LOCKED, UNLOCKED);
+	Door* door_CryptEntrance_Crypt = new Door(SOUTH, NORTH, cryptEntrance, crypt);
+	Door* door_Crypt_Chapel = new Door(WEST, EAST, crypt, chapel);
+	door_Crypt_Chapel->setDoorLock(UNLOCKED, LOCKED, UNLOCKED);
+	Door* door_MainHall_ChapelEntrance = new Door(SOUTH, NORTH, mainHall, chapelEntrance);
+	door_MainHall_ChapelEntrance->setDoorLock(LOCKED, UNLOCKED, UNLOCKED);
+	Door* door_ChapelEntrance_GraveyardEntrance = new Door(WEST, EAST, chapelEntrance, graveyardEntrance);
+	door_ChapelEntrance_GraveyardEntrance->setDoorLock(UNLOCKED, UNLOCKED, LOCKED);
+	Door* door_ChapelEntrance_Chapel = new Door(SOUTH, NORTH, chapelEntrance, chapel);
+	Door* door_MainHall_GraveyardGarden = new Door(WEST, EAST, mainHall, graveyardGarden);
+	door_MainHall_GraveyardGarden->setDoorLock(UNLOCKED, LOCKED, UNLOCKED);
+	Door* door_GraveyardGarden_GraveyardEntrance = new Door(SOUTH, NORTH, graveyardGarden, graveyardEntrance);
+	Door* door_GraveyardEntrance_Graveyard = new Door(WEST, EAST, graveyardEntrance, graveyard);
+	Door* door_MainHall_Frontyard = new Door(NORTH, SOUTH, mainHall, frontYard);
+	door_MainHall_Frontyard->setDoorLock(LOCKED, LOCKED, LOCKED);
 
-	mainHall->addItem(tool1);
-	mainHall->addItem(tool2);
-	mainHall->addItem(tool3);
-	mainHall->addItem(meat);
-	mainHall->addItem(sword);
-	mainHall->addItem(shield);
-	mainHall->addItem(redKey);
-	mainHall->addItem(greenKey);
-	mainHall->addItem(blueKey);
-	mainHall->addItem(poison);
-	mainHall->addItem(poison2);
-	mainHall->addItem(poison3);
-	mainHall->addItem(bag);
+	// Enemies
+	Enemy* goblin1 = new Enemy("goblin1", "An ugly creature, a GOBLIN, is in the middle of the room. Be careful.", 11, 2, 40);
+	Enemy* goblin2 = new Enemy("goblin2", "A strange creature, it's a GOBLIN. Looks unfriendly.", 11, 2, 40);
+	Enemy* goblin3 = new Enemy("goblin3", "A big GOBLIN in a hole in the wall, it's hidden and protected from your attacks.", 11, 999, 40);
+	Enemy* boss = new Enemy("boss", "A huge MONSTER in front of you, it's hungry...", 15, 10, 100);
 
-	Door* doorMainHall_CryptGarden = new Door(EAST, WEST, mainHall, cryptGarden);
-	//doorMainHall_CryptGarden->setDoorLock(LOCKED, LOCKED, LOCKED);
-	rooms.push_back(mainHall);
-	rooms.push_back(cryptGarden);
-	*/
-
+	chapelEntrance->setEnemy(goblin1);
+	graveyardGarden->setEnemy(goblin2);
+	crypt->setEnemy(goblin3);
+	frontYard->setEnemy(boss);
+	
 	// Player
 	player = new Player("Hero", "You are a very handsome guy.");
 	player->currentRoom = mainHall;
-	
 };
 
 World::~World()

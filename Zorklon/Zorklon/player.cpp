@@ -14,12 +14,13 @@ Entity(name, description)
 	attackPoints = 10;
 	defensePoints = 10;
 	lifePoints = 50;
+	winGame = false;
 };
 
 void Player::Do(const string word1, const string word2)
 {
 	if (word1 == "look") Look(word2);
-	else if (word1 == "go") Go(word2); else if (word1 == "go") Go(word2);
+	else if (word1 == "go") Go(word2);
 	else if (word1 == "open") Open(word2);
 	else if (word1 == "take") Take(word2);
 	else if (word1 == "leave") Leave(word2);
@@ -28,7 +29,10 @@ void Player::Do(const string word1, const string word2)
 	else if (word1 == "attack") Attack(word2);
 	else if (word1 == "upgrade") Upgrade(word2);
 	else if (word1 == "poison") Poison(word2);
+	else if (word1 == "help") showHelp();
 	else cout << "I don't understand this.\n";
+
+	if (word1 != "go") tickEnemy();
 }
 
 bool Player::isDead()
@@ -43,6 +47,11 @@ int Player::itemsEquiped()
 	return itemsEquiped;
 }
 
+void Player::tickEnemy()
+{
+	if (currentRoom->enemy != NULL) currentRoom->enemy->Tick(this);
+}
+
 returnsType Player::getItem(const string item, Entity* owner)
 {
 	Item* foundItem;
@@ -52,7 +61,7 @@ returnsType Player::getItem(const string item, Entity* owner)
 
 	if (foundItem != NULL)
 	{
-		if (itemsEquiped() == maxItemsEquiped)
+		if (itemsEquiped() == maxItemsEquiped && item != "bag")	// the bag doesn't counts
 		{
 			owner->addItem(foundItem);
 			return TOO_MANY;
@@ -76,7 +85,7 @@ returnsType Player::putItem(const string item, Entity* newOwner)
 
 	if (foundItem == NULL)
 		return NOT_FOUND;
-		//cout << "You don't have that item.\n";
+	//cout << "You don't have that item.\n";
 	else
 	{
 		newOwner->addItem(foundItem);
@@ -86,7 +95,8 @@ returnsType Player::putItem(const string item, Entity* newOwner)
 
 void Player::clearEnemy(Room* enemyRoom)
 {
-	cout << "The enemy has been killed.\n";
+	if (enemyRoom->enemy->name == "boss") winGame = true;
+	enemyRoom->enemy->enemyDead(currentRoom);
 	delete(enemyRoom->enemy);
 	enemyRoom->enemy = NULL;
 }
@@ -95,12 +105,13 @@ void Player::exitRoom()
 {
 	if (currentRoom->enemy != NULL)
 	{
+		cout << "The enemy in the room attack you before you exit.\n";
 		currentRoom->enemy->attackPlayer(this);
 	}
 	if (!isDead())
 	{
 		currentRoom = currentRoom->door[directionWatching]->getNextRoom(currentRoom);
-		cout << currentRoom->description << "\n";
+		Look("room");
 		directionWatching = NOWHERE;
 	}
 }
@@ -118,7 +129,6 @@ void Player::receiveAttack(int enemyAttackPoints)
 
 	lifePoints = lifePoints - enemyAttackPoints;
 
-	cout << "The enemy in the room attack you before you exit.\n";
 	cout << "The attack caused " << enemyLifeBefore - lifePoints << " points of damage.\n";
 
 	if (lifePoints <= 0)
@@ -133,8 +143,68 @@ void Player::receiveAttack(int enemyAttackPoints)
 
 void Player::Look(const string item)
 {
-	if (item == "")
+	if (item == "" || item == "room")
+	{
 		cout << currentRoom->description << "\n";
+		if (currentRoom->items.size() > 0)
+		{
+			cout << "You can see other things here: \n";
+			for (auto& item : currentRoom->items) cout << "-" << item->description << endl;
+		}
+		if (currentRoom->enemy != NULL) cout << "There is something more. " << currentRoom->enemy->description << endl;
+	}
+	else if (item == "player")
+	{
+		cout << description << endl;
+		if (items.size() > 0)
+		{
+			cout << "You have: \n";
+			for (auto& item : items) cout << "-" << item->description << endl;
+		}
+		cout << endl << "Life: " << lifePoints << " points.\n";
+	}
+	else if (item == "bag")
+	{
+		Item* bag;
+
+		bag = dynamic_cast<Item*>(findByName("bag"));									// check if the player has the bag
+		if (bag == NULL) bag = dynamic_cast<Item*>(currentRoom->findByName("bag"));		// check if there is a bag in the room
+
+		if (bag == NULL) cout << "There is no bag here.\n";
+		else
+		{
+			cout << bag->description << endl;
+			if (bag->items.size() > 0)
+			{
+				cout << "The bag contains: \n";
+				for (auto& item : bag->items) cout << "-" << item->description << endl;
+			}
+		}
+	}
+	else if (item == "door")
+	{
+		if (directionWatching == NOWHERE) cout << "You don't have a door in front of you.\n";
+		else currentRoom->door[directionWatching]->checkDoor();
+	}
+	else if (item == "enemy" || item == "goblin" || item == "monster")
+	{
+		if (currentRoom->enemy == NULL) cout << "There is no " << item << " in this room.\n";
+		else
+		{
+			cout << currentRoom->enemy->description << endl;
+			cout << "Life: " << currentRoom->enemy->lifePoints;
+		}
+	}
+	else
+	{
+		Item* itemToLook;
+
+		itemToLook = dynamic_cast<Item*>(findByName(item));												// check if the player has the item
+		if (itemToLook == NULL) itemToLook = dynamic_cast<Item*>(currentRoom->findByName(item));		// check if the item is in the room
+
+		if (itemToLook == NULL) cout << "There is no such thing here.\n";
+		else cout << itemToLook->description;
+	}
 }
 
 void Player::Go(const string direction)
@@ -285,7 +355,7 @@ void Player::Store(const string item)
 	else
 	{
 		if (item == "bag")
-			cout << "You can't store that.\n";
+cout << "You can't store that.\n";
 		else if (bag == NULL)										// the player don't have a bag
 			cout << "You need a BAG for storing items.\n";
 		else if (putItem(item, bag) == ITEM_PUT)					// item stored in the bag
@@ -306,7 +376,7 @@ void Player::Attack(const string item)
 	else if ((item == "goblin" || item == "monster" || item == "enemy") && currentRoom->enemy != NULL)
 	{
 		sword = dynamic_cast<Item*>(findByName("sword"));
-		if (sword != NULL)  
+		if (sword != NULL)
 		{
 			cout << "You attack the enemy with your sword.\n";
 			totalAttackPoints += sword->usePoints;		// if the player has a sword, increases his attack power
@@ -315,10 +385,10 @@ void Player::Attack(const string item)
 		{
 			cout << "You attack the enemy with your hands.\n";
 		}
-		
+
 		enemyLifeBefore = currentRoom->enemy->lifePoints;
 		enemyLifeAfter = currentRoom->enemy->receiveAttack(totalAttackPoints);
-		if (enemyLifeAfter <= 0) 
+		if (enemyLifeAfter <= 0)
 			clearEnemy(currentRoom);
 		else
 		{
@@ -335,16 +405,16 @@ void Player::Upgrade(const string item)
 	Item* upgradeTool = dynamic_cast<Item*>(findByName("tool"));
 	Item* itemToUpgrade;
 
-	if (item == "") 
+	if (item == "")
 		cout << "You must tell what to upgrade.\n";
 	else if (upgradeTool == NULL)
 		cout << "You must have an upgrade tool equiped.\n";
 	else if (item != "sword" && item != "shield")
 		cout << "You cannot upgrade that.\n";
-	else 
+	else
 	{
 		itemToUpgrade = dynamic_cast<Item*>(findByName(item));
-		if (itemToUpgrade == NULL) 
+		if (itemToUpgrade == NULL)
 			cout << "You must have the " << item << " equiped in order to upgrade it.\n";
 		else
 		{
@@ -382,7 +452,21 @@ void Player::Poison(const string item)
 			delete(poisonBottle);
 		}
 	}
-	cout << itemsEquiped();
+}
+
+void Player::showHelp()
+{
+	cout << "LIST OF COMMANDS:" << endl;
+	cout << "look [X] - Show a description of X." << endl;
+	cout << "go [north, south, east, west] - Go to that direction." << endl;
+	cout << "take [X] - The player get the item." << endl;
+	cout << "leave [X] - The player leaves the item in the current room." << endl;
+	cout << "open [door]" << endl;
+	cout << "store [X] - Stores the item in the bag (you need the bag)." << endl;
+	cout << "equip [X] - Get an item from the bag." << endl;
+	cout << "attack [enemy]" << endl;
+	cout << "upgrade [shield, sword] - You need the object to upgrade and the TOOL, both equiped." << endl;
+	cout << "poison [meat, sword] - You need the object to poison and the POISON, both equiped." << endl;
 }
 
 Player::~Player()

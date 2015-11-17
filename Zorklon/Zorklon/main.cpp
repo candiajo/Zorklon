@@ -17,13 +17,15 @@ int main()
 	string player_input;
 	bool endGame = false;
 
+	cout << "Welcome to Zorklon, you are in a old mansion and your goal is to escape. Good luck!" << endl << endl;
+	zorklonWorld.player->Do("look", "room");
 	while (!endGame)
 	{
 		endGame = input.getPlayerInput();
-		endGame = endGame || zorklonWorld.player->isDead();
+		endGame = endGame || zorklonWorld.player->isDead() || zorklonWorld.player->winGame;
 	}
 
-	cout << "\nThanks for playing!\n";
+	cout << endl << "Thanks for playing!\n";
 	getline(cin, player_input);
 	return 0;
 }
